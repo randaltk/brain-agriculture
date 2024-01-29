@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Produtor } from './producer.entity';
+import { Producer } from './producer.entity';
+import { ProducersModule } from './producers.module';
 
 @Injectable()
-export class ProdutoresService {
+export class ProducersService {
   constructor(
-    @InjectRepository(Produtor)
-    private readonly produtoresRepository: Repository<Produtor>,
+    @InjectRepository(Producer)
+    private readonly producersRepository: Repository<Producer>,
   ) {}
 
-  async criarProdutor(produtor: Produtor): Promise<Produtor> {
-    return await this.produtoresRepository.save(produtor);
+  async createProducer(producer: Producer): Promise<Producer> {
+    return await this.producersRepository.save(producer);
   }
 
  
