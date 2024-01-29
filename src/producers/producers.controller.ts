@@ -7,7 +7,7 @@ export class ProducersController {
   constructor(private readonly producersService: ProducersService) {}
 
   @Post()
-  async criarProdutor(@Body() producer: Producer): Promise<Producer> {
+  async createProducer(@Body() producer: Producer): Promise<Producer> {
     return await this.producersService.createProducer(producer);
   }
 
