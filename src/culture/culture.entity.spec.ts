@@ -25,7 +25,6 @@ describe('Culture Entity', () => {
 
     describe('Create Culture', () => {
         it('should create a new culture', async () => {
-            // Mock the save method of the repository
             const mockSave = jest.fn().mockResolvedValue({
                 id: 1,
                 name: 'Soybean',

@@ -1,23 +1,27 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { Producer } from './producer.entity';
 import { ProducersService } from './producers.service';
-import { IBGEService } from '../services/ibge.service';
+import { IBGEService } from '../ibge-service/ibge.service';
 import { firstValueFrom } from 'rxjs';
 
 @Controller('producers')
 export class ProducersController {
-  constructor(private readonly producersService: ProducersService, private readonly ibgeService: IBGEService) { }
+  constructor(
+    private readonly producersService: ProducersService,
+    private readonly ibgeService: IBGEService,
+  ) {}
 
-  @Post()
-  async createProducer(@Body() producer: Producer): Promise<Producer> {
-    return await this.producersService.createProducer(producer);
+  @Get('states')
+  async getStates(): Promise<string[]> {
+    return await this.ibgeService.getStates().toPromise();
   }
 
-  @Get()
-  async getAllProducers(): Promise<Producer[]> {
-    return await this.producersService.getAllProducers();
+  @Get('cities/:state')
+  async getCities(@Param('state') state: string): Promise<string[]> {
+    const citiesObservable = this.ibgeService.getCitiesByState(state);
+    return await firstValueFrom(citiesObservable);
   }
-
+  
   @Get(':id')
   async getProducerById(@Param('id') id: number): Promise<Producer> {
     const producer = await this.producersService.getProducerById(id);
@@ -27,6 +31,16 @@ export class ProducersController {
     }
 
     return producer;
+  }
+
+  @Post()
+  async createProducer(@Body() producer: Producer): Promise<Producer> {
+    return await this.producersService.createProducer(producer);
+  }
+
+  @Get()
+  async getAllProducers(): Promise<Producer[]> {
+    return await this.producersService.getAllProducers();
   }
 
   @Put(':id')
@@ -45,17 +59,6 @@ export class ProducersController {
     return `Producer with id ${id} has been successfully deleted.`;
   }
 
-
-  @Get('states')
-  async getStates(): Promise<string[]> {
-    return await firstValueFrom(this.ibgeService.getStates());
-  }
-
-  @Get('cities/:state')
-  async getCities(@Param('state') state: string): Promise<string[]> {
-    return await firstValueFrom(this.ibgeService.getCitiesByState(state));
-  }
-
   @Get('dashboard/total-farms')
   async getTotalFarms(): Promise<{ totalFarms: number; totalArea: number }> {
     const totalFarms = await this.producersService.getTotalFarms();
@@ -72,9 +75,10 @@ export class ProducersController {
   async getCulturePieChart(): Promise<{ culture: string; count: number }[]> {
     return this.producersService.getCulturePieChartData();
   }
-  
+
   @Get('dashboard/land-use-pie-chart')
   async getLandUsePieChartData(): Promise<{ category: string; area: number }[]> {
     return await this.producersService.getLandUsePieChartData();
   }
+
 }

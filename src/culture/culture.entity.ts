@@ -9,6 +9,6 @@ export class Culture {
     @Column()
     name: string;
 
-    @ManyToOne(() => Producer, producer => producer.cultures)
+    @ManyToOne(() => Producer, producer => producer.cultures,{ onDelete: 'CASCADE' })
     producer: Producer;
 }
