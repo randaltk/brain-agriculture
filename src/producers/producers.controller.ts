@@ -37,11 +37,11 @@ export class ProducersController {
   @Delete(':id')
   async deleteProducer(@Param('id') id: number): Promise<string> {
     const deletedProducer = await this.producersService.removeProducer(id);
-  
+
     if (!deletedProducer) {
       throw new HttpException('Producer not found', HttpStatus.NOT_FOUND);
     }
-  
+
     return `Producer with id ${id} has been successfully deleted.`;
   }
 
@@ -54,5 +54,27 @@ export class ProducersController {
   @Get('cities/:state')
   async getCities(@Param('state') state: string): Promise<string[]> {
     return await firstValueFrom(this.ibgeService.getCitiesByState(state));
+  }
+
+  @Get('dashboard/total-farms')
+  async getTotalFarms(): Promise<{ totalFarms: number; totalArea: number }> {
+    const totalFarms = await this.producersService.getTotalFarms();
+    const totalArea = await this.producersService.getTotalArea();
+    return { totalFarms, totalArea };
+  }
+
+  @Get('dashboard/state-pie-chart')
+  async getStatePieChart(): Promise<{ state: string; count: number }[]> {
+    return this.producersService.getStatePieChartData();
+  }
+
+  @Get('dashboard/culture-pie-chart')
+  async getCulturePieChart(): Promise<{ culture: string; count: number }[]> {
+    return this.producersService.getCulturePieChartData();
+  }
+  
+  @Get('dashboard/land-use-pie-chart')
+  async getLandUsePieChartData(): Promise<{ category: string; area: number }[]> {
+    return await this.producersService.getLandUsePieChartData();
   }
 }

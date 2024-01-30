@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Cultura } from '../culture/culture.entity';
+import { Culture } from '../culture/culture.entity';
 
 @Entity()
 export class Producer {
@@ -21,7 +21,7 @@ export class Producer {
   @Column()
   state: string;
 
-  @Column({ type: 'float' })
+  @Column({ type: 'float'})
   totalArea: number;
 
   @Column({ type: 'float' })
@@ -30,6 +30,6 @@ export class Producer {
   @Column({ type: 'float' })
   vegetationArea: number;
 
-  @OneToMany(() => Cultura, culture => culture.producer, { cascade: true })
-  cultures: Cultura[];
+  @OneToMany(() => Culture, culture => culture.producer,{ cascade: true })
+  cultures: Culture[];
 }

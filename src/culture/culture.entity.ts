@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Producer } from '../producers/producer.entity';
 
 @Entity()
-export class Cultura {
+export class Culture {
     @PrimaryGeneratedColumn()
     id: number;
 
