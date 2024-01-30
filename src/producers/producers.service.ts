@@ -42,7 +42,7 @@ export class ProducersService {
   }
 
   async getAllProducers(): Promise<Producer[]> {
-    return await this.producersRepository.find();
+    return await this.producersRepository.find({ relations: ['cultures'] });
   }
 
   async getProducerById(id:number): Promise<Producer> {
