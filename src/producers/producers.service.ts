@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Producer } from './producer.entity';
 import { ProducerValidationService } from './producer-validation/producer-validation.service';
 import { ProducerChartService } from './producer-chart/producer-chart.service';
-import { IBGEService } from 'src/ibge-service/ibge.service';
+
 
 @Injectable()
 export class ProducersService {
