@@ -34,8 +34,10 @@ export class ProducersService {
   }
 
   async getProducerById(id: number): Promise<Producer> {
-    const producer = await this.producersRepository.findOneBy({ id: id });
-
+    const producer = await this.producersRepository.findOne({
+      where: { id },
+      relations: ['cultures'],
+    });
     if (!producer) {
       throw new NotFoundException('Producer not found');
     }
