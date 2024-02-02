@@ -28,7 +28,9 @@ export class ProducerChartService {
       .getRawMany();
   }
 
-  async getCulturePieChartData(): Promise<{ culture: string; count: number }[]> {
+  async getCulturePieChartData(): Promise<
+    { culture: string; count: number }[]
+  > {
     return this.producersRepository
       .createQueryBuilder('producer')
       .innerJoinAndSelect('producer.cultures', 'culture')
@@ -36,19 +38,32 @@ export class ProducerChartService {
       .groupBy('culture.name')
       .getRawMany();
   }
-
-  async getLandUsePieChartData(): Promise<{ category: string; area: number }[]> {
-    const results = await this.producersRepository
+  async getLandUsePieChartData(): Promise<
+    { category: string; area: number }[]
+  > {
+    const result = await this.producersRepository
       .createQueryBuilder('producer')
       .select([
-        'SUM(producer."cultivableArea") as cultivableArea',
-        'SUM(producer."vegetationArea") as vegetationArea',
+        "CASE WHEN producer.cultivableArea > 0 THEN 'Cultivable Area' ELSE 'Vegetation Area' END as category",
+        'SUM(producer.cultivableArea) as area',
       ])
-      .getRawOne();
+      .groupBy('category')
+      .getRawMany();
 
-    return [
-      { category: 'Cultivable Area', area: results.cultivableArea || 0 },
-      { category: 'Vegetation Area', area: results.vegetationArea || 0 },
-    ];
+    const resultVegetation = await this.producersRepository
+      .createQueryBuilder('producer')
+      .select([
+        "CASE WHEN producer.vegetationArea > 0 THEN 'Vegetation Area' ELSE 'Cultivable Area' END as category",
+        'SUM(producer.vegetationArea) as area',
+      ])
+      .groupBy('category')
+      .getRawMany();
+
+    const combinedResult = [...result, ...resultVegetation];
+
+    return combinedResult.map((item) => ({
+      category: item.category,
+      area: parseFloat(item.area) || 0,
+    }));
   }
 }
