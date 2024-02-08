@@ -20,7 +20,7 @@ Use npm start:dev para iniciar o servidor local em http://localhost:3000.
 # Recursos Disponíveis
 A seguir estão os recursos disponíveis na API.
 
-1. Informações do Produtor
+## 1. Informações do Produtor
 
 1.1 - Obter Todos os Produtores
 
@@ -71,7 +71,7 @@ Descrição: Remove um produtor com base no ID fornecido.
 
 curl -X DELETE /producers/2
 
-2. Estatísticas Agrícolas
+## 2. Estatísticas Agrícolas
 
 2.1 - Estatísticas Gerais
 
@@ -113,25 +113,24 @@ Descrição: Retorna estatísticas sobre o uso da terra nas fazendas cadastradas
 
 curl -X GET /producers/dashboard/land-use-pie-chart
 
-3. Informações Geográficas
+## 3. Informações Geográficas
 
-3.1 - Produtores por Cidade
+3.1 - Informações Geográficas para cadastro de produtores(servico ibge)
 
 Endpoint: /producers/cities/{city}
 
 Método: GET
 
-Descrição: Retorna informações sobre os produtores localizados em uma cidade 
-específica.
+Descrição: Retorna lista de cidades baseada no estado. 
 
 curl -X GET /producers/cities/MG
 
-3.2 - Produtores por Estado
+3.2 - Retorna lista de estados.
 
 Endpoint: /producers/states
 
 Método: GET
 
-Descrição: Retorna informações sobre os produtores agrupados por estado.
+Descrição: Retorna lista de estados.
 
 curl -X GET /producers/states
