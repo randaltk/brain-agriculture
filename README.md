@@ -59,6 +59,7 @@ Endpoint: /producers/{id}
 Método: PUT
 
 Descrição: Atualiza as informações de um produtor com base no ID fornecido.
+
 curl -X PUT -H "Content-Type: application/json" -d '{"id": 3, "cpfCnpj": "24936797000100", "name": "Randassfaaal", "farmName": "Farm", "city": "SP", "state": "SP", "totalArea": 23003, "cultivableArea": 2500, "vegetationArea": 3200}' /producers/3
 
 1.5 - Excluir um Produtor
